@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:Store4U.API}/store.db",
+            "name": "Store4U"
+        }
+    ],
+    "sqltools.useNodeRuntime": true,
+    "omnisharp.enableImportCompletion": true,
+    "omnisharp.organizeImportsOnFormat": true,
+    "csharp.inlayHints.parameters.enabled": true,
+    "csharp.inlayHints.parameters.forIndexerParameters": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false
+}
