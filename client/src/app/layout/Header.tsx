@@ -23,7 +23,7 @@ const navStyles= {
     '&:hover': {
         color:'grey.500'
     },
-    '&:active': {
+    '&.active': {
         color:'text.secondary'
     }
 }
