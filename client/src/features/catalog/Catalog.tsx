@@ -13,13 +13,11 @@ export default function Catalog() {
             .catch(error => console.log(error))
             .finally(() => {setLoading(false);})
     }, []);
-    
 if(loading) return <LoadingComponent message="Loading products..."/>
 
     return (
         <>
             <ProductList products={products}  />  
-            
         </>
     )
 }
