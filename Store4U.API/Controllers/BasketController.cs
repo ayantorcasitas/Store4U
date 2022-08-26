@@ -35,6 +35,39 @@ namespace Store4U.API.Controllers
             return MapBasketToDto(basket);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> AddItemToBasket(int productId, int quantity)
+        {
+            //get basket
+            //create basket
+            //get product
+            //add item
+            //save changes
+            var basket = await RetrieveBasket();
+            if (basket == null) basket = CreateBasket();
+            var product = await _context.Products.FindAsync(productId);
+            if (product == null) return BadRequest(new ProblemDetails { Title = "Product Not Found" });
+            basket.AddItem(product, quantity);
+            var result = await _context.SaveChangesAsync() > 0;
+
+            if (result) return CreatedAtRoute("GetBasket", MapBasketToDto(basket));
+            return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> RemoveBasketItem(int productId, int quantity)
+        {
+            //get basket
+            //remove item or reduce quantity
+            //save changes
+            var basket = await RetrieveBasket();
+            if (basket == null) return NotFound();
+            basket.RemoveItem(productId, quantity);
+            var result = await _context.SaveChangesAsync() > 0;
+            if (result) return Ok();
+            return BadRequest(new ProblemDetails { Title = "Problem removing item from the basket" });
+        }
+
         private BasketDto MapBasketToDto(Basket basket)
         {
             return new BasketDto
@@ -62,24 +95,6 @@ namespace Store4U.API.Controllers
                     .FirstOrDefaultAsync(x => x.BuyerId == Request.Cookies["buyerId"]);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> AddItemToBasket(int productId, int quantity)
-        {
-            //get basket
-            //create basket
-            //get product
-            //add item
-            //save changes
-            var basket = await RetrieveBasket();
-            if (basket == null) basket = CreateBasket();
-            var product = await _context.Products.FindAsync(productId);
-            if (product == null) return NotFound();
-            basket.AddItem(product, quantity);
-            var result = await _context.SaveChangesAsync() > 0;
-
-            if (result) return CreatedAtRoute("GetBasket", MapBasketToDto(basket));
-            return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
-        }
 
         private Basket CreateBasket()
         {
@@ -91,19 +106,6 @@ namespace Store4U.API.Controllers
             return basket;
         }
 
-        [HttpDelete]
-        public async Task<ActionResult> RemoveBasketItem(int productId, int quantity)
-        {
-            //get basket
-            //remove item or reduce quantity
-            //save changes
-            var basket = await RetrieveBasket();
-            if (basket == null) return NotFound();
-            basket.RemoveItem(productId, quantity);
-            var result = await _context.SaveChangesAsync() > 0;
-            if (result) return Ok();
-            return BadRequest(new ProblemDetails { Title = "Problem removing item from the basket" });
-        }
 
     }
 }
