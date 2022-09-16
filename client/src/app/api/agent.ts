@@ -1,6 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from '../..';
+import { fetchFilters } from '../../features/catalog/catalogSlice';
+import { PaginatedResponse } from '../models/pagination';
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -10,6 +12,12 @@ const responseBody = (response: AxiosResponse) => response.data;
 
 axios.interceptors.response.use(async (response) => { 
     await sleep();
+    const pagination = response.headers['pagination'];
+    if (pagination) {
+        response.data = new PaginatedResponse(response.data, JSON.parse(pagination));
+        console.log(response);
+        return response;
+    }
     return response;
 }, (error: AxiosError) => {
     //console.log('caught by interceptor');
@@ -44,7 +52,8 @@ axios.interceptors.response.use(async (response) => {
     return Promise.reject(error.response);
 })
 const requests = {
-    get: (url: string) => axios.get(url, { headers: { "Access-Control-Allow-Credentials": "true" } }).then(responseBody),
+    get: (url: string, params?: URLSearchParams) => axios.get(url, {params, headers: { "Access-Control-Allow-Credentials": "true" }},).then(responseBody),
+    //get: (url: string) => axios.get(url, { headers: { "Access-Control-Allow-Credentials": "true" } }).then(responseBody),
     post: (url: string, body:{}) => axios.post(url, body,{ headers: { "Access-Control-Allow-Credentials": "true" } }).then(responseBody),
     put: (url: string, body:{}) => axios.put(url, body,{ headers: { "Access-Control-Allow-Credentials": "true" } }).then(responseBody),
     delete: (url: string) => axios.delete(url,{ headers: { "Access-Control-Allow-Credentials": "true" } }).then(responseBody)
@@ -58,8 +67,9 @@ const requests = {
 // }
 
 const Catalog = {
-    list: () => requests.get('products'),
-    details: (id: number)=>requests.get(`products/${id}`),
+    list: (params: URLSearchParams) => requests.get('products',params),
+    details: (id: number) => requests.get(`products/${id}`),
+    fetchFilters: ()=>requests.get(`products/filters`),
 }
 
 const Basket = {
