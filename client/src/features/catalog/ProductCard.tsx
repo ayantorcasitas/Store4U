@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../store/configureStore';
 import { addBasketItemAsync } from '../basket/basketSlice';
 
 interface Props{
-    product: Product;
+    product: Product
 }
 
 export default function ProductCard({ product }: Props) {

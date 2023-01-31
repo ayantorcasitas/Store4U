@@ -1,3 +1,11 @@
 {
-    "search.useIgnoreFiles": false
+    "search.useIgnoreFiles": false,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:Store4U}/Store4U.API/store.db",
+            "name": "store4udb"
+        }
+    ]
 }

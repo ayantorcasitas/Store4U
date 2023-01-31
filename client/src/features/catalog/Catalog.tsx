@@ -17,7 +17,7 @@ const sortOptions = [
 export default function Catalog() {
     
     const products = useAppSelector(productSelectors.selectAll);
-    const { productsLoaded, status, filtersLoaded, brands, types, productParams, metaData } = useAppSelector(state => state.catalog);
+    const { productsLoaded, filtersLoaded, brands, types, productParams, metaData } = useAppSelector(state => state.catalog);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -42,15 +42,6 @@ export default function Catalog() {
                         options={sortOptions}
                         onChange={(e)=>dispatch(setProductParams({orderBy: e.target.value}))}
                     />
-                    {/* <FormControl component="fieldset">
-                        <RadioGroup value={productParams.orderBy} onChange={(e)=>dispatch(setProductParams({orderBy: e.target.value}))} >
-                            {
-                                sortOptions.map(({ value, label }) => (
-                                    <FormControlLabel value={value} control={<Radio />} label={label} key={value} />
-                                ))
-                            }
-                        </RadioGroup>
-                    </FormControl> */}
                 </Paper>
                 <Paper sx={{ mb: 2, p: 2 }}>
                     <CheckboxButtons
