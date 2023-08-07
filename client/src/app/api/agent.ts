@@ -1,8 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
-import { history } from '../..';
 import { PaginatedResponse } from '../models/pagination';
 import { store } from '../../store/configureStore';
+import { router } from '../router/Routes';
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -49,7 +49,7 @@ axios.interceptors.response.use(async (response) => {
             //     { pathname: '/server-error' },
             //     { state: error }
             // );
-            history.push({pathname: '/server-error', state:{error: data}});
+            router.navigate('/server-error', {state: {error: data}});
             break;
         default:
             break;

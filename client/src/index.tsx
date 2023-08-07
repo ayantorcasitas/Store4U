@@ -1,94 +1,25 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import './app/layout/styles.css';
 import App from './app/layout/App';
-//import ReactDOM from "react-dom/client";
-
-
 import reportWebVitals from './reportWebVitals';
-import { createBrowserHistory } from "history";
-import { Router } from 'react-router-dom';
-import { StoreProvider } from './app/context/StoreContext';
-//import { configureStore } from './store/configureStore';
 
 import { Provider } from 'react-redux';
 import { store } from './store/configureStore';
+import { RouterProvider } from 'react-router';
+import { router } from './app/router/Routes';
 
-//const store = configureStore();
-
-export const history = createBrowserHistory();
-
-// const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-// //root.render(<h1>Hello, world!</h1>);
-
-// root.render(
-//   <React.StrictMode>
-//     <Router history={history}>
-//         <App />
-//     </Router>
-//   </React.StrictMode>
-// );
-
-// var rootElem = document.getElementById("root") as HTMLElement;
-// debugger;
-// const root = ReactDOM.createRoot(rootElem);
-// root.render(
-//   <React.StrictMode>
-//     <Router history={history}>
-//       {/* <StoreProvider>
-//         <App />
-//       </StoreProvider> */}
-//       <App />
-//     </Router>
-//   </React.StrictMode>
-// );
-
-
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <Router history={history}>
-//       <StoreProvider>
-//         <Provider store={store}>
-//           <App />
-//         </Provider>
-//       </StoreProvider>
-//     </Router>
-//   </React.StrictMode>,
-//   document.getElementById('root')
-// );
-
-
-ReactDOM.render(
-  <React.StrictMode>
-    <Router history={history}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </Router>
-  </React.StrictMode>,
-  document.getElementById('root')
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
 );
 
-
-// ReactDOM.render(
-//   <React.StrictMode>
-//       <BrowserRouter>
-//         <App/>
-//       </BrowserRouter>
-//   </React.StrictMode>,
-//   document.getElementById('root')
-// );
-
-// const root = ReactDOM.createRoot(
-//   document.getElementById('root') as HTMLElement
-// );
-// root.render(
-//   <>
-//     <BrowserRouter history={history}>
-//       <App />
-//     </BrowserRouter>
-//   </>
-// );
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </React.StrictMode>
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

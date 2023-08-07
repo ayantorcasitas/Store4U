@@ -11,17 +11,17 @@ import { productSelectors, fetchProductAsync } from './catalogSlice';
 
 
 export default function ProductDetails() {
-    const { basket,status } = useAppSelector(state => state.basket);
+    const { basket, status } = useAppSelector(state => state.basket);
     const dispatch = useAppDispatch();
     const { id } = useParams<{ id: string }>();
-    const product = useAppSelector(state => productSelectors.selectById(state, id));
+    const product = useAppSelector(state => productSelectors.selectById(state, id!));
     const { status: productStatus } = useAppSelector(state => state.catalog);
     const [quantity, setQuantity] = useState(0);
     const item = basket?.items.find(i => i.productId === product?.id);
     useEffect(() => {
         if (item) setQuantity(item.quantity);
-        if (!product) dispatch(fetchProductAsync(parseInt(id)));
-    }, [id, item, dispatch,product])
+        if (!product && id) dispatch(fetchProductAsync(parseInt(id)));
+    }, [id, item, dispatch, product])
 
     function handleInputChange(event: any) {
         if (event.target.value >= 0) {
@@ -32,7 +32,7 @@ export default function ProductDetails() {
     function handleUpdateCart() {
         if (!item || quantity > item.quantity) {
             const updatedQuantity = item ? (quantity - item.quantity) : quantity;
-            dispatch(addBasketItemAsync({productId:product?.id!, quantity:updatedQuantity}))
+            dispatch(addBasketItemAsync({ productId: product?.id!, quantity: updatedQuantity }))
         } else {
             const updatedQuantity = item.quantity - quantity;
             dispatch(removeBasketItemAsync({ productId: product?.id!, quantity: updatedQuantity }));
@@ -49,30 +49,30 @@ export default function ProductDetails() {
             </Grid>
             <Grid item xs={6}>
                 <Typography variant="h3">{product.name}</Typography>
-                <Divider sx={{mb:2}}/>
+                <Divider sx={{ mb: 2 }} />
                 <Typography variant="h4" color='secondary'>${(product.price / 100).toFixed(2)}</Typography>
                 <TableContainer>
                     <Table>
                         <TableBody>
                             <TableRow>
                                 <TableCell>Name</TableCell>
-                                <TableCell>{product.name }</TableCell>
+                                <TableCell>{product.name}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Description</TableCell>
-                                <TableCell>{product.description }</TableCell>
+                                <TableCell>{product.description}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Type</TableCell>
-                                <TableCell>{product.type }</TableCell>
+                                <TableCell>{product.type}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Brand</TableCell>
-                                <TableCell>{product.brand }</TableCell>
+                                <TableCell>{product.brand}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Quantity</TableCell>
-                                <TableCell>{product.quantityInStock }</TableCell>
+                                <TableCell>{product.quantityInStock}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -94,11 +94,11 @@ export default function ProductDetails() {
                             size='large'
                             variant='contained'
                             fullWidth
-                            disabled={item?.quantity===quantity || !item && quantity===0}
+                            disabled={item?.quantity === quantity || !item && quantity === 0}
                             loading={status.includes('pending')}
                             onClick={handleUpdateCart}
                         >
-                            {item?'Update Quantity':'Add to Cart'}
+                            {item ? 'Update Quantity' : 'Add to Cart'}
                         </LoadingButton>
                     </Grid>
                 </Grid>

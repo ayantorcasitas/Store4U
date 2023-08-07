@@ -27,7 +27,7 @@ export default function AboutPage() {
                             {
                                 validationErrors.map(error => (
                                     <ListItem key={error}>
-                                        <ListItemText>{error}</ListItemText>    
+                                        <ListItemText>{error}</ListItemText>
                                     </ListItem>
                                 ))
                             }
